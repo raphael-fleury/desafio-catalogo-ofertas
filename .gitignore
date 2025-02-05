@@ -1,0 +1,36 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+.env
+
+# Django stuff
+*.log
+db.sqlite3
+media/
+staticfiles/
+
+# IDEs e editores
+.vscode/
+.idea/
+*.swp
+
+# Arquivos de dependências gerados
+Pipfile
+Pipfile.lock
+
+# Selenium e WebDrivers
+chromedriver
+chromedriver.exe
+geckodriver
+geckodriver.exe
+
+# Configurações locais
+.env
+config/settings_local.py
+
+# Arquivos do PostgreSQL
+*.dump
