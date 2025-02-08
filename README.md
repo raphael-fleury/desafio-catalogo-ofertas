@@ -13,3 +13,5 @@ Raphael Fleury
         - Linux ou MacOS: ```source myvenv/bin/activate```
     - Mais [informações sobre ambientes virtuais com pyvenv](https://python-land.translate.goog/virtual-environments/virtualenv?_x_tr_sl=en&_x_tr_tl=pt&_x_tr_hl=pt&_x_tr_pto=tc) caso seja necessário
 - Instalar as dependências com o comando ```pip install -r requirements.txt```
+## Como Executar
+Executar o comando ```python manage.py runserver```
