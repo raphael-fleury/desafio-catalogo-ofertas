@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo de Ofertas</title>
+</head>
+<body>
+    <h1>Produtos Encontrados</h1>
+    
+    <form method="GET">
+        <label>
+            <input type="checkbox" name="free-shipping" {% if request.GET.frete_gratis %}checked{% endif %}>
+            Frete Grátis
+        </label>
+        <label>
+            <input type="checkbox" name="full" {% if request.GET.full %}checked{% endif %}>
+            Full
+        </label>
+        <button type="submit">Filtrar</button>
+    </form>
+
+    <ul>
+        {% for product in products %}
+        <li>
+            <img src="{{ product.image }}" width="150"><br>
+            <strong>{{ product.name }}</strong><br>
+            Preço: R$ {{ product.price }}<br>
+
+            {% if product.original_price != product.price %}
+                Preço sem desconto: R$ {{ product.original_price }}<br>
+                Desconto: {{ product.discount_percentage }}%<br>
+            {% endif %}
+
+            {% if product.installment_options %}
+                Parcelamento: {{ product.installment_options }}<br>
+            {% endif %}
+
+            Tipo de Entrega: {{ product.delivery_type }}<br>
+            
+            {% if product.free_shipping %}
+                Frete Grátis!<br>
+            {% endif %}
+
+            <a href="{{ product.link }}" target="_blank">Ver Produto</a><br>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
