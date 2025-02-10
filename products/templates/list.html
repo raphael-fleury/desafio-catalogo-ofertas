@@ -2,24 +2,169 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de Ofertas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        .card {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
         }
-        .card-body {
-            flex-grow: 1;
+
+        header {
+            background-color: #00a650;
+            color: white;
+            padding: 15px 0px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        h1 {
+            margin: 0 1em;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        form {
+            margin: 0 2em;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: white;
+        }
+
+        .form-check input {
+            accent-color: white;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        select, button {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        select {
+            background-color: white;
+            color: #333;
+        }
+
+        button {
+            background-color: #fff;
+            color: #00a650;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #e0e0e0;
+        }
+        
+        main {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 20px;
+            padding-top: calc(30px + 5em);
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 15px;
+            width: 250px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .product-card img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+
+        .product-card h3 {
+            font-size: 16px;
+            margin: 10px 0;
+            text-decoration: underline;
+        }
+
+        .product-card a {
+            text-decoration: none;
+            color: black;
+            font-weight: bold;
+        }
+
+        .product-card .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: #00a650;
+            margin: 10px 0;
+        }
+
+        .product-card .original-price {
+            font-size: 14px;
+            text-decoration: line-through;
+            color: #888;
+        }
+
+        .product-card .discount {
+            font-size: 14px;
+            color: #00a650;
+            margin-left: 5px;
+        }
+
+        .product-card .installments {
+            font-size: 14px;
+            color: #000;
+            margin-top: 10px;
+        }
+
+        .product-card .shipping {
+            font-size: 14px;
+            font-weight: bold;
+            color: #00a650;
+            margin-top: 10px;
+        }
+
+        .product-card .shipped-from {
+            font-size: 12px;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        .product-card .shipping .poly-shipping--next_day {
+            color: #00a650;
+            font-weight: bold;
+        }
+
+        .product-card .shipped-from svg {
+            vertical-align: middle;
+            margin-left: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container mt-4">
-        <h1 class="mb-4">Produtos Encontrados</h1>
-        
+    <header>
+        <h1>Produtos Encontrados</h1>
+    
         <form method="GET" class="mb-4">
             <div class="form-check form-check-inline">
                 <label class="form-check-label" for="free-shipping">Frete Grátis</label>
@@ -33,7 +178,7 @@
                     {% if full %}checked{% endif %}
                 >
             </div>
-
+    
             <div class="mb-3">
                 <label for="order" class="form-label">Ordenar por:</label>
                 <select name="order" id="order" class="form-select">
@@ -46,38 +191,44 @@
             
             <button type="submit" class="btn btn-primary">Filtrar</button>
         </form>
+    </header>
 
-        <div class="row">
-            {% for product in products %}
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ product.name }}</h5>
-                            <p class="card-text">
-                                Preço: R$ {{ product.price }}<br>
-                                {% if product.original_price != product.price %}
-                                    Preço sem desconto: R$ {{ product.original_price }}<br>
-                                    Desconto: {{ product.discount_percentage }}%<br>
-                                {% endif %}
-                                {% if product.installment_options %}
-                                    Parcelamento: {{ product.installment_options }}<br>
-                                {% endif %}
-                                Tipo de Entrega: {{ product.delivery_type }}<br>
-                                {% if product.free_shipping %}
-                                    <span class="badge bg-success">Frete Grátis!</span><br>
-                                {% endif %}
-                            </p>
-                        </div>
-                        <div class="card-footer">
-                            <a href="{{ product.link }}" class="btn btn-info" target="_blank">Ver Produto</a>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+    <main>
+        {% for product in products %}
+        <div class="product-card">
+            <img src="{{ product.image }}" class="card-img-top" alt="{{ product.name }}">
+            <h3>
+                <a href="{{ product.link }}">{{ product.name }}</a>
+            </h3>
+    
+            <div class="price">
+                {% if product.original_price != product.price %}
+                <span class="original-price">{{ product.original_price }}</span>
+                {% endif %}
+                <span>R$ {{ product.price }}</span>
+                {% if product.discount_percentage %}
+                <br>
+                <span class="discount">{{ product.discount_percentage }}% de desconto</span>
+                {% endif %}
+            </div>
+    
+            {% if product.installment_options %}
+            <div class="installments">
+                <span>{{ product.installment_options }}</span>
+            </div>
+            {% endif %}
+    
+            {% if product.free_shipping %}
+            <div class="shipping">
+                Frete Grátis!
+            </div>
+            {% endif %}
+    
+            <div class="shipped-from">
+                Tipo de Entrega: {{ product.delivery_type }}
+            </div>
         </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        {% endfor %}
+    </main>
 </body>
 </html>
