@@ -49,20 +49,22 @@ def collect_data():
             discount_selector = './/span[contains(@class, "andes-money-amount__discount")]'
 
             name = product.find_element(By.XPATH, './/a').text
-            image = product.find_element(By.XPATH, './/img').get_attribute("src")
             price = product.find_element(
                 By.XPATH, f'{current_price_selector}{price_amount_selector}'
             ).text
 
-            original_price = product.find_element(
-                By.XPATH, f'{original_price_selector}//span[contains(@class, "andes-money-amount__fraction")]'
-            ).text \
-                if product.find_elements(By.XPATH, current_price_selector) \
-                else price
+            img_element = product.find_element(By.XPATH, './/img[contains(@class, "poly-component__picture")]')
+            image = img_element.get_attribute("data-src") \
+                or img_element.get_attribute("srcset") \
+                or img_element.get_attribute("src")
 
-            discount_text = product.find_element(By.XPATH, discount_selector).text \
-                if product.find_elements(By.XPATH, discount_selector) \
-                else "0"
+            original_price_element = product.find_elements(
+                By.XPATH, f'{original_price_selector}{price_amount_selector}'
+            )
+            original_price = original_price_element[0].text if original_price_element else price
+
+            discount_element = product.find_elements(By.XPATH, discount_selector)
+            discount_text = discount_element[0].text if discount_element else "0%"
 
             installment_options = product.find_element(By.XPATH, './/span[contains(@class, "poly-price__installments")]').text
             link = product.find_element(By.XPATH, './/h3//a').get_attribute("href")
