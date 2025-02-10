@@ -11,4 +11,12 @@ def list_products(request: HttpRequest):
     if (request.GET.get("full")):
         products = products.filter(delivery_type='Full')
 
+    order = request.GET.get("order")
+    if order == "price_asc":
+        products = products.order_by('price')
+    elif order == "price_desc":
+        products = products.order_by('-price')
+    elif order == "discount_desc":
+        products = products.order_by('discount_percentage')
+
     return render(request, "list.html", {"products": products})

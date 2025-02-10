@@ -12,10 +12,22 @@
             <input type="checkbox" name="free-shipping" {% if request.GET.frete_gratis %}checked{% endif %}>
             Frete Grátis
         </label>
+
         <label>
             <input type="checkbox" name="full" {% if request.GET.full %}checked{% endif %}>
             Full
         </label>
+
+        <br>
+        <label for="order">Ordenar por:</label>
+        <select name="order" id="order">
+            <option value="">Escolha...</option>
+            <option value="price_asc" {% if request.GET.order == "price_asc" %}selected{% endif %}>Preço: Menor para Maior</option>
+            <option value="price_desc" {% if request.GET.order == "price_desc" %}selected{% endif %}>Preço: Maior para Menor</option>
+            <option value="discount_desc" {% if request.GET.order == "discount_desc" %}selected{% endif %}>Maior Desconto</option>
+        </select>
+
+        <br>
         <button type="submit">Filtrar</button>
     </form>
 
