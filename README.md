@@ -15,4 +15,5 @@ Raphael Fleury
 - Instalar as dependências com o comando ```pip install -r requirements.txt```
 ## Como Executar
 - ```python manage.py migrate``` para montar o banco de dados.
+- ```python manage.py collect_data``` para fazer a raspagem dos dados.
 - ```python manage.py runserver``` para iniciar o servidor.
