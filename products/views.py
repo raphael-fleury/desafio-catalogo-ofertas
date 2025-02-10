@@ -6,9 +6,12 @@ from products.models import Product
 def list_products(request: HttpRequest):
     products = Product.objects.all()
 
-    if (request.GET.get("free-shipping")):
+    free_shipping = request.GET.get("free-shipping") == "on"
+    full = request.GET.get("full") == "on"
+
+    if (free_shipping):
         products = products.filter(free_shipping=True)
-    if (request.GET.get("full")):
+    if (full):
         products = products.filter(delivery_type='Full')
 
     order = request.GET.get("order")
@@ -19,4 +22,8 @@ def list_products(request: HttpRequest):
     elif order == "discount_desc":
         products = products.order_by('discount_percentage')
 
-    return render(request, "list.html", {"products": products})
+    return render(request, "list.html", {
+        "products": products,
+        "free_shipping": free_shipping,
+        "full": full
+    })

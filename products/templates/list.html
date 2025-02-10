@@ -22,12 +22,16 @@
         
         <form method="GET" class="mb-4">
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" name="free-shipping" {% if request.GET.frete_gratis %}checked{% endif %}>
-                <label class="form-check-label">Frete Grátis</label>
+                <label class="form-check-label" for="free-shipping">Frete Grátis</label>
+                <input class="form-check-input" type="checkbox" name="free-shipping"
+                    {% if free_shipping %}checked{% endif %}
+                >
             </div>
             <div class="form-check form-check-inline">
-                <input class="form-check-input" type="checkbox" name="full" {% if request.GET.full %}checked{% endif %}>
-                <label class="form-check-label">Full</label>
+                <label class="form-check-label" for="full">Full</label>
+                <input class="form-check-input" type="checkbox" name="full"
+                    {% if full %}checked{% endif %}
+                >
             </div>
 
             <div class="mb-3">
