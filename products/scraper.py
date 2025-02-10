@@ -1,3 +1,4 @@
+import re
 from products.models import Product
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
@@ -42,6 +43,7 @@ def collect_data():
 
     for product in products:
         try:
+            current_price_selector = './/div[contains(@class, "poly-price__current")]'
             price_amount_selector = '//span[contains(@class, "andes-money-amount__fraction")]'
             original_price_selector = './/s[contains(@class, "andes-money-amount--previous")]'
             discount_selector = './/span[contains(@class, "andes-money-amount__discount")]'
@@ -49,18 +51,18 @@ def collect_data():
             name = product.find_element(By.XPATH, './/a').text
             image = product.find_element(By.XPATH, './/img').get_attribute("src")
             price = product.find_element(
-                By.XPATH, f'.//div[contains(@class, "poly-price__current")]{price_amount_selector}'
+                By.XPATH, f'{current_price_selector}{price_amount_selector}'
             ).text
 
             original_price = product.find_element(
                 By.XPATH, f'{original_price_selector}//span[contains(@class, "andes-money-amount__fraction")]'
             ).text \
-                if product.find_elements(By.XPATH, original_price_selector) \
+                if product.find_elements(By.XPATH, current_price_selector) \
                 else price
 
-            discount_percentage = product.find_element(By.XPATH, discount_selector).text \
+            discount_text = product.find_element(By.XPATH, discount_selector).text \
                 if product.find_elements(By.XPATH, discount_selector) \
-                else 0
+                else "0"
 
             installment_options = product.find_element(By.XPATH, './/span[contains(@class, "poly-price__installments")]').text
             link = product.find_element(By.XPATH, './/h3//a').get_attribute("href")
@@ -75,7 +77,7 @@ def collect_data():
                 delivery_type=delivery_type,
                 free_shipping=free_shipping,
                 original_price=float(original_price.replace('.', '').replace(',', '.')),
-                discount_percentage=discount_percentage,
+                discount_percentage=int(re.sub(r"\D", "", discount_text)),
                 installment_options=installment_options
             )
         except Exception as e:
